@@ -97,10 +97,10 @@ fn main() -> io::Result<()> {
         best_exprs.push(expr);
     }
 
-    // if total_cost >= total_original_cost {
-    //     println!("No improvement found");
-    //     return Ok(());
-    // }
+    if total_cost >= total_original_cost {
+        println!("No improvement found");
+        return Ok(());
+    }
 
     // Output
     println!("\nOptimization Results:");
@@ -120,3 +120,4 @@ fn main() -> io::Result<()> {
 
     Ok(())
 }
+

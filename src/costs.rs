@@ -1,7 +1,7 @@
 use egg::{Id, EGraph, Language, RecExpr};
 use std::collections::HashMap;
 use crate::math::Math;
-use crate::math::{is_const_from_expr, is_const_from_egraph, is_exp_of_const_w, is_w_from_egraph};
+use crate::math::{is_const_from_expr, is_const_from_egraph};
 use std::fs;
 
 // Cost model for cryptographic operations
@@ -78,13 +78,7 @@ impl<'a> CryptoCost<'a> {
             Math::Square(_) => self.square_cost,
             Math::Val(_) => 0.0,
             Math::Inverse(_) => self.inv_cost,
-            Math::Exp([a, b]) => {
-                if is_exp_of_const_w(expr, a) {
-                    0.0
-                } else {
-                    self.exp_cost
-                }
-            }
+            Math::Exp(_) => self.exp_cost,
             _ => 0.0,
         }
     }
@@ -114,15 +108,8 @@ impl<'a> egg::CostFunction<Math> for CryptoCost<'a> {
             Math::Square(_) => self.square_cost + children_cost,
             Math::Val(_) => 0.0,
             Math::Inverse(_) => self.inv_cost + children_cost,
-            Math::Exp([a, b]) => {
-                let cost = if is_w_from_egraph(self.egraph, a) {
-                    0.0
-                } else {
-                    self.exp_cost
-                };
-                cost + children_cost
-            }
-            Math::Fp6(_) => children_cost,
+            Math::Exp(_) => self.exp_cost + children_cost,
+            Math::Fp2(_) => children_cost,
         }
     }
 }
