@@ -77,4 +77,9 @@ E-classes: 1719
 
 
 ### Branch-wise details
-TENTATIVE
+Richard: 
+TL;DR
+`echo -e "(** (Fp6 g0 g1 g2 h0 h1 h2) (+ (- (** (Fp6 g0 g1 g2 h0 h1 h2) 4) (** (Fp6 g0 g1 g2 h0 h1 h2) 2)) 1))\ndone" | cargo run ../rules/rules_fp6.txt ../costs/costs_fp6.txt`
+
+This branch focuses on Benchmark 6 with algorithm 29, 30, and 31 and section 3.2 of the BMO paper. The rewrite rules are in "../rules/rules_fp6.txt"
+It incorporates the Fp6 DSL which is represented as Fp6 g0 g1 g2 h0 h1 h2. Caveats include that any exponentiation has a non-symbolic cost (aka just an integer value) so the cost of p^100 = p^p. 
