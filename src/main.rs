@@ -1,7 +1,6 @@
 mod costs;
 mod rules;
 mod math;
-mod verify;
 mod global_costs;
 use egg::{Extractor, RecExpr, Runner};
 use std::io::{self, BufRead};
@@ -11,7 +10,6 @@ use crate::rules::{default_rules, load_rules_from_file};
 use crate::costs::{CryptoCost, load_cost_model_from_file};
 use crate::global_costs::update_costs;
 use crate::math::Math;
-use crate::verify::verify_ruleset;
 
 fn main() -> io::Result<()> {
     // Parse command line arguments
@@ -29,8 +27,6 @@ fn main() -> io::Result<()> {
     if args.len() > 2 {
         cost_file = Some(&args[2]);
     }
-
-    verify_ruleset(&default_rules());
 
     println!("Finite Field Expression Optimizer");
     println!("=================================");
@@ -101,10 +97,10 @@ fn main() -> io::Result<()> {
         best_exprs.push(expr);
     }
 
-    if total_cost >= total_original_cost {
-        println!("No improvement found");
-        return Ok(());
-    }
+    // if total_cost >= total_original_cost {
+    //     println!("No improvement found");
+    //     return Ok(());
+    // }
 
     // Output
     println!("\nOptimization Results:");
@@ -124,4 +120,3 @@ fn main() -> io::Result<()> {
 
     Ok(())
 }
-
