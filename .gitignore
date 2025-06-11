@@ -1,0 +1,8 @@
+**/_build/
+.DS_Store
+**/submission.zip
+**/test.ml
+**/debug/
+**/target/
+**/Cargo.lock
+**/.rustc_info.json
