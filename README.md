@@ -81,5 +81,5 @@ Hugo:
 TL;DR
 `echo -e "(** (Fp2 a0 a1) (- p2 2))\ndone" | cargo run ../rules_b5.txt ../costs_b5.txt`
 
-This branch focuses on Benchmark 5 with algorithm 8 of the BGMO paper. The algorithm does not use Fermat's Little Theorem but the operation is equivalent to doing an inverse. The rewrite rules are in "../rules_b5.txt" and the cost model is in "../costs_b5.txt".
-It incorporates the Fp2 DSL which is represented as Fp2 a0 a1. The exponentation was given a cost of 80 due to it being used for inverse operation in this benchmark.
+This branch focuses on Benchmark 5 with algorithm 8 of the BGMO paper. The algorithm does not start with Fermat's Little Theorem but the operation is equivalent to doing an inverse. The rewrite rules are in "../rules_b5.txt" and the cost model is in "../costs_b5.txt".
+It incorporates the Fp2 DSL which is represented as Fp2 a0 a1. We know that \(A^{-1} = \bar A / N(A)\) and the algorithm does exactly this using one inversion in \(\mathbb F_p\), reducing the cost from 80 to 26. The exponentation was given a cost of 80 due to it being used for inverse operation in this benchmark.
