@@ -13,6 +13,28 @@ cd src
 cargo build
 ```
 
+### Architecture
+The Eggcelerator architecture consists of several key components:
+
+![Eggcelerator Overall Architecture](./images/overall.png)
+
+Our system takes input formulas written in a domain-specific language and decomposes them into sub-formulas. These sub-formulas are processed using multiple Eggines, which perform equality saturation guided by a defined set of rewrite rules.
+
+All rewrite rules are verified for correctness using a Z3 Solver and a Rules Verifier, ensuring sound transformations. A cost model is used to extract the most efficient equivalent expression from the e-graph. The result is a set of formally verified, cost-optimized expressions ready for high-performance cryptographic applications.
+
+![Eggcelerator Detailed Architecture](./images/details.png)
+
+The figure above shows the detailed architecture of Eggcelerator’s optimization pipeline.
+
+Each input formula is first decomposed into sub-formulas, which are independently optimized using e-graphs via the egg engine. These e-graphs apply rewrite rules to enumerate equivalent expressions by exploiting algebraic identities and structural equivalences.
+
+After saturation, the candidate expressions from each sub-formula are extracted and passed to the AST Merger, which combines them into full candidate expressions for the original formula.
+
+The merged candidates are then evaluated by the Global Cost Counter, which compares the original and optimized expressions using a predefined cost model (e.g., counting field multiplications, additions, or estimating latency).
+
+The output is a pair:
+(Original Cost, Optimized Cost) — showing the effectiveness of the transformation.
+
 ### Tutorial
 TL;DR Quick Command for B1:
 ```bash
@@ -98,7 +120,7 @@ E-classes: 1719
 
 
 ### Branch-wise details
-Eirik:
+TL;DR Benchmark 1, 2, 3:
 
 `git checkout master`
 
@@ -112,7 +134,7 @@ This example shows how eggcelerator works on Benchmark 2. It demonstrates optimi
 
 This example shows how eggcelerator works on Benchmark 3, which involves optimization of Fp6 multiplication. It demonstrates the application of Karatsuba multiplication technique to complex number arithmetic in finite field extensions. The input expressions represent the components of Fp6 multiplication, but in this case, no cost improvement was found because the implemented rules already represent an optimal strategy for the given cost model. Furthermore, eggcelerator processes each expression independently, with no knowledge transfer between subformulas, which limits potential optimizations across the complete Fp6 multiplication algorithm. This benchmark highlights eggcelerator's ability to handle multi-variable expressions and complex algebraic structures, while also showing a limitation in optimizing compound operations.
 
-Hugo: 
+TL;DR Benchmark 5:
 
 `git checkout hugo`
 
@@ -121,7 +143,7 @@ Hugo:
 This branch focuses on Benchmark 5 with algorithm 8 of the BGMO paper. The algorithm does not start with Fermat's Little Theorem but the operation is equivalent to doing an inverse. The rewrite rules are in "../rules_b5.txt" and the cost model is in "../costs_b5.txt".
 It incorporates the Fp2 DSL which is represented as Fp2 a0 a1. We know that $A^{-1} = \bar A / N(A)$ and the algorithm does exactly this using one inversion in $\mathbb F_p$, reducing the cost from 80 to 26. The exponentation was given a cost of 80 due to it being used for inverse operation in this benchmark.
 
-Richard: 
+TL;DR Benchmark 6:
 
 `git checkout richard`
 
