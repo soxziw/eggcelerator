@@ -99,7 +99,7 @@ E-classes: 1719
 
 ### Branch-wise details
 Eirik:
-TL;DR
+
 `git checkout master`
 
 `echo -e "(+ (* ?a0 ?b0) (* ?a1 ?b1))\n(- (* (+ ?a0 ?a1) (+ ?b0 ?b1)) (+ (* ?a0 ?b0) (* ?a1 ?b1)))\ndone" | cargo run rules_fp0.txt costs_fp0.txt`
@@ -112,9 +112,19 @@ This example shows how eggcelerator works on Benchmark 2. It demonstrates optimi
 
 This example shows how eggcelerator works on Benchmark 3, which involves optimization of Fp6 multiplication. It demonstrates the application of Karatsuba multiplication technique to complex number arithmetic in finite field extensions. The input expressions represent the components of Fp6 multiplication, but in this case, no cost improvement was found because the implemented rules already represent an optimal strategy for the given cost model. Furthermore, eggcelerator processes each expression independently, with no knowledge transfer between subformulas, which limits potential optimizations across the complete Fp6 multiplication algorithm. This benchmark highlights eggcelerator's ability to handle multi-variable expressions and complex algebraic structures, while also showing a limitation in optimizing compound operations.
 
+Hugo: 
+
+`git checkout hugo`
+
+`echo -e "(** (Fp2 a0 a1) (- p2 2))\ndone" | cargo run ../rules_b5.txt ../costs_b5.txt`
+
+This branch focuses on Benchmark 5 with algorithm 8 of the BGMO paper. The algorithm does not start with Fermat's Little Theorem but the operation is equivalent to doing an inverse. The rewrite rules are in "../rules_b5.txt" and the cost model is in "../costs_b5.txt".
+It incorporates the Fp2 DSL which is represented as Fp2 a0 a1. We know that $A^{-1} = \bar A / N(A)$ and the algorithm does exactly this using one inversion in $\mathbb F_p$, reducing the cost from 80 to 26. The exponentation was given a cost of 80 due to it being used for inverse operation in this benchmark.
+
 Richard: 
-TL;DR
+
 `git checkout richard`
+
 `echo -e "(** (Fp6 g0 g1 g2 h0 h1 h2) (+ (- (** (Fp6 g0 g1 g2 h0 h1 h2) 4) (** (Fp6 g0 g1 g2 h0 h1 h2) 2)) 1))\ndone" | cargo run ../rules/rules_fp6.txt ../costs/costs_fp6.txt`
 
 This branch focuses on Benchmark 6 with algorithm 29, 30, and 31 and section 3.2 of the BMO paper. The rewrite rules are in "../rules/rules_fp6.txt"
